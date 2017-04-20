@@ -6,7 +6,7 @@
 
 var config = {};
 config.browserSync = {
-  proxyTarget: 'localhost:8080',
+  proxyTarget: '18check.dev.force1.awdev.ca',
   proxyReqHeaders: {
     host: 'www.shila.dev'
   }

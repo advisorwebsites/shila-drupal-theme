@@ -10,3 +10,6 @@
 @import '../_patterns/02-organisms/global/shila-off-canvas/shila-off-canvas-layout';
 @import '../_patterns/02-organisms/sections/shila-card-list/shila-card-list-layout';
 @import '../_patterns/03-templates/**/*.scss';
+body {
+  background: yellow;
+}
