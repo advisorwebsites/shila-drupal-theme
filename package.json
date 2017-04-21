@@ -3,17 +3,25 @@
   "version": "1.0.0",
   "description": "Shila theme for Drupal 8",
   "dependencies": {
+    "foundation-sites": "^6.3.1",
     "shila-css": "^1.0.0-alpha"
   },
   "devDependencies": {
     "browser-sync": "^2.18.8",
     "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.1",
     "gulp-run": "1.7.1",
     "gulp-sass": "^3.1.0",
+    "gulp-sass-external-variables": "^0.0.3",
     "gulp-sass-glob": "^1.0.8",
     "gulp-sass-lint": "^1.3.2",
     "gulp-sourcemaps": "^2.6.0",
-    "run-sequence": "^1.2.2"
+    "gulp-tap": "^0.4.2",
+    "gulp-vars": "^0.1.6",
+    "run-sequence": "^1.2.2",
+    "vinyl-source-stream": "^1.1.0",
+    "yargs": "^7.1.0"
   },
   "repository": {
     "type": "git",
