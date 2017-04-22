@@ -141,3 +141,22 @@ function aw_plain_theme_suggestions_field_alter(array &$suggestions, array $vari
     $suggestions[] = 'field__' . $element['#field_type'] . '__' . $settings['target_type'] . '__' . $element['#formatter'];
   }
 }
+
+function aw_plain_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'aw_plain') {
+    // $filename = DRUPAL_ROOT .'/'. $siteStyles .'/' . $activeTheme . '_variables.json';
+    if (isset($libraries['global-styling'])) {
+      foreach ($libraries['global-styling']['css']['theme'] as $key => $value) {
+        $exploded_path = explode('/', $key);
+        $new_path = 'public://site_styles/' . $exploded_path[2];
+        $current = file_exists($new_path);
+        ksm($new_path, $current);
+        if ($current) {
+          $libraries['global-styling']['css']['theme'][$new_path] = $value;
+          unset($libraries['global-styling']['css']['theme'][$key]);
+        }
+      }
+    }
+    ksm($extension, $libraries);
+  }
+}

@@ -1,0 +1,29 @@
+<section{{ attributes.addClass('products-services') }}>
+  {% if icon %}
+  {% spaceless %}
+    <div class="products-services__icon">
+      {{ icon }}
+    </div>
+  {% endspaceless %}
+  {% endif %}
+  <div class="products-services__body">
+    {{ contextual_links }}
+    {{ title_prefix }}
+    {% if title %}
+      <h2 class="products-services__title">{{ title }}</h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% if content %}
+      <div class="products-services__content">
+        {% block content %}
+          {{ content }}
+        {% endblock %}
+      </div>
+    {% endif %}
+    {% if actions %}
+      <div class="products-services__actions">
+        {{ actions }}
+      </div>
+    {% endif %}
+  </div>
+</section>

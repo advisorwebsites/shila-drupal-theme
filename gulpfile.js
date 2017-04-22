@@ -21,7 +21,8 @@ config.sass = {
   watchFiles: [
     './dist/sass/**/*.scss',
     './dist/_patterns/**/*.scss',
-    './node_modules/shila-css/**/*.scss'
+    './node_modules/shila-css/**/*.scss',
+    './node_modules/foundation-sites/scss/**/*.scss'
   ],
   options: {
     includePaths: [
@@ -29,11 +30,13 @@ config.sass = {
       './node_modules/shila-css',
       './node_modules/breakpoint-sass/stylesheets',
       './node_modules/sass-toolkit/stylesheets',
-      './node_modules/singularitygs/stylesheets'
+      './node_modules/singularitygs/stylesheets',
+      './node_modules/foundation-sites/scss'
     ],
     outputStyle: 'expanded'
   },
-  destDir: './dist/css'
+  destDir: './dist/css',
+  sassDestDir: './dist/sass/'
 };
 config.patternsDir = './dist/_patterns';
 config.imageFiles = './dist/images/**/*';
@@ -46,15 +49,29 @@ config.drupal = {
 
 // Load Gulp and other tools.
 
-var gulp = require('gulp');
-var run = require('gulp-run');
-var runSequence = require('run-sequence');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var browserSync = require('browser-sync').create();
-var fs = require('fs');
-var sassLint = require('gulp-sass-lint');
-var sassGlob = require('gulp-sass-glob');
+const gulp = require('gulp');
+const vars = require('gulp-vars');
+const run = require('gulp-run');
+const runSequence = require('run-sequence');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const browserSync = require('browser-sync').create();
+const fs = require('fs');
+const sassLint = require('gulp-sass-lint');
+const sassGlob = require('gulp-sass-glob');
+const autoprefixer = require('gulp-autoprefixer');
+const sassExternalVariables = require('gulp-sass-external-variables');
+const argv = require('yargs').argv;
+const tap = require('gulp-tap');
+
+
+var variables = 'aw_plain_variables.json';
+if (argv.public && argv.public.length) {
+  config.sass.destDir = '../../../' + argv.public;
+  variables = '../../../' + argv.public + '/aw_plain_variables.json';
+  // console.log(variables);
+  config.sass.options.includePaths.push(variables);
+}
 
 // Helper functions.
 
@@ -87,11 +104,52 @@ gulp.task('watch', ['sass-change'], function () {
  * Compiles Sass files.
  */
 gulp.task('sass', function () {
+  function getUserVariables(variables) {
+    console.log(variables);
+    return gulp.src(variables)
+      .pipe(sassExternalVariables({
+        sass: false
+      }))
+      .pipe(tap(function(file, t) {
+        var theFile = file.contents.toString();
+        file.contents = Buffer.from(function (theFile) {
+          console.log(theFile);
+          return theFile.replace('"', '');
+        });
+        console.log(file.contents.toString());
+      }))
+      .pipe(gulp.dest(config.sass.sassDestDir));
+  }
+  function compileSass(variablesStream) {
+    return gulp.src(config.sass.srcFiles)
+      .pipe(sassGlob())
+      .pipe(sourcemaps.init())
+      .pipe(sass(config.sass.options).on('error', sass.logError))
+      .pipe(autoprefixer({
+          browsers: ['last 2 versions', 'ie >= 11', 'and_chr >= 2.3'],
+          cascade: false
+      }))
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest(config.sass.destDir))
+      .pipe(browserSync.stream({match: '**/*.css'}));
+  }
+  return compileSass(getUserVariables(variables));
+});
+
+/**
+ * Compiles Sass files.
+ */
+gulp.task('sass-ie11', function () {
   return gulp.src(config.sass.srcFiles)
     .pipe(sassGlob())
     .pipe(sourcemaps.init())
     .pipe(sass(config.sass.options).on('error', sass.logError))
+    .pipe(autoprefixer({
+        browsers: ['ie = 11'],
+        cascade: false
+    }))
     .pipe(sourcemaps.write('./'))
+    .pipe(vars())
     .pipe(gulp.dest(config.sass.destDir))
     .pipe(browserSync.stream({match: '**/*.css'}));
 });
@@ -152,4 +210,4 @@ gulp.task('lint:sass', function () {
 /**
  * Gulp default task.
  */
-gulp.task('default', ['watch']);
+gulp.task('default', ['sass']);

@@ -1,7 +1,8 @@
-name: AW Plain theme
+name: AW Plain
 type: theme
 description: An atomic design and Pattern Lab friendly starting point for new Drupal themes.
 package: AW Plain
+aw theme: true
 core: 8.x
 libraries:
   - core/normalize

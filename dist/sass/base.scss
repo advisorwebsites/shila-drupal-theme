@@ -5,6 +5,18 @@
  * CSS rules that style HTML elements ("base" styles).
  */
 
+@import 'settings';
+@import 'aw_plain_variables.scss';
+@import 'css4-variables';
+
+body {
+  background: $primary-color;
+}
+
+@import 'foundation';
+
+@include foundation-global-styles;
+
 @import 'partials/imports';
 @import 'partials/generic/generic.box-sizing';
 @import 'partials/elements/elements.page';

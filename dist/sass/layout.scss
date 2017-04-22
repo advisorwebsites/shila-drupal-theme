@@ -5,11 +5,33 @@
  * CSS rules that layout a page.
  */
 
+@import 'settings';
+@import 'foundation';
+
+@include foundation-grid;
+@include foundation-flex-grid;
+@include foundation-flex-classes;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
+
 @import 'partials/imports';
 @import '../_patterns/01-molecules/components/shila-card/shila-card-layout';
 @import '../_patterns/02-organisms/global/shila-off-canvas/shila-off-canvas-layout';
 @import '../_patterns/02-organisms/sections/shila-card-list/shila-card-list-layout';
 @import '../_patterns/03-templates/**/*.scss';
 body {
-  background: yellow;
+  background: var(--color-primary-base);
+}
+@mixin grid-3x1() {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 15px;
+}
+
+.srv-8 {
+  @include grid-3x1;
+  > * {
+    background: var(--color-primary-base);
+  }
 }

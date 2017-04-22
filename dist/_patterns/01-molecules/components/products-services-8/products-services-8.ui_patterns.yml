@@ -1,0 +1,24 @@
+products_services_8:
+  label: Products & Services 8
+  theme hook: products-services
+  description: A card component.
+  fields:
+    icon:
+      type: text
+      label: Icon
+      description: Icon for Products & Services
+      preview:
+        type: pattern
+        id: shila_image
+        fields:
+          image:
+            theme: image
+            uri: http://lorempixel.com/300/200/nature/
+            width: 300
+            attributes: {}
+    title:
+      type: string
+      label: Title
+      description: Card title.
+      preview: Lorem ipsum dolor sit amet
+  use: '@molecules/components/products-services/products-services.html.twig'

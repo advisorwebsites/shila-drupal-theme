@@ -5,6 +5,13 @@
  * CSS rules that style design components (and their associated states and themes.)
  */
 
+@import 'settings';
+@import 'foundation';
+
+@include foundation-button;
+@include foundation-button-group;
+@include foundation-table;
+
 @import 'partials/imports';
 @import '../_patterns/00-atoms/images/shila-feed-icon/shila-feed-icon';
 @import '../_patterns/01-molecules/**/*.scss';

@@ -1,0 +1,50 @@
+products_services:
+  label: Products & Services
+  description: A card component.
+  fields:
+    image:
+      type: image
+      label: Image
+      description: Card image.
+      preview:
+        type: pattern
+        id: shila_image
+        fields:
+          image:
+            theme: image
+            uri: http://lorempixel.com/300/200/nature/
+            width: 300
+            attributes: {}
+    icon:
+      type: text
+      label: Icon
+      description: Icon for Products & Services
+      preview:
+        type: pattern
+        id: shila_image
+        fields:
+          image:
+            theme: image
+            uri: http://lorempixel.com/300/200/nature/
+            width: 300
+            attributes: {}
+    title:
+      type: string
+      label: Title
+      description: Card title.
+      preview: Lorem ipsum dolor sit amet
+    content:
+      type: string
+      label: Content
+      description: Card content.
+      preview: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>'
+    actions:
+      type: string
+      label: Actions
+      description: Action links, buttons etc.
+      preview: '<a href="http://example.com">Read more</a>'
+  libraries:
+  - design_form:
+      js:
+        design.js: {}
+  use: '@molecules/components/products-services/products-services.html.twig'

@@ -1,0 +1,120 @@
+
+
+// variable prefixes for CSS4 output
+$color-prefix: --color-;
+$size-prefix: --size-;
+
+// retrieve color from map with Sass ie. `color(primary, base)`
+@function color($color-name, $color-variant:null, $true-val:false) {
+
+  // we need to return the color value
+  @if $true-val == true {
+    // color variant is optional
+    @if ($color-variant != null) {
+      // map inception, need two deep
+      @return map-get(map-get($colors,$color-name),$color-variant);
+
+    } @else {
+      // single-level color, one deep
+      @return map-get($colors,$color-name);
+
+    }
+  // if we're only returning the CSS4 variable
+  } @else {
+    // color variant is optional
+    @if ($color-variant != null) {
+      // map inception, need two names
+      @return var(#{$color-prefix}#{$color-name}-#{$color-variant});
+
+    } @else {
+      // single-level color, one name
+      @return var(#{$color-prefix}#{$color-name});
+
+    }
+  }
+}
+
+// retrieve size from map with Sass ie. `size(viewport, sm)`
+@function size($size-name, $size-variant:null, $true-val:false) {
+
+  // we need to return the size value
+  @if $true-val == true {
+    // size variant is optional
+    @if ($size-variant != null) {
+      // map inception, need two deep
+      @return map-get(map-get($sizes,$size-name),$size-variant);
+
+    } @else {
+      // single-level size, one deep
+      @return map-get($sizes,$size-name);
+
+    }
+  // if we're only returning the CSS4 variable
+  } @else {
+    // size variant is optional
+    @if ($size-variant != null) {
+      // map inception, need two names
+      @return var(#{$size-prefix}#{$size-name}-#{$size-variant});
+
+    } @else {
+      // single-level size, one name
+      @return var(#{$size-prefix}#{$size-name});
+
+    }
+  }
+}
+
+// define local variable
+@mixin var($name,$value) {
+  #{--$name}: $value;
+}
+// access any variable
+@function v($name) {
+  @return var(--#{$name});
+}
+
+/* ripped CSS4 vars out of color map */
+:root {
+
+  // each item in color map
+  @each $name, $color in $colors {
+
+    // maps require a second loop
+    @if type-of($color) == "map" {
+
+      // each item in sub map
+      @each $subname, $subcolor in $color {
+        // --color-primary-base
+        #{$color-prefix}#{$name}-#{$subname}: $subcolor;
+      }
+
+    // normal colors
+    } @elseif type-of($color) == "color" {
+
+      // --color-background
+      #{$color-prefix}#{$name}: $color;
+
+    }
+  }
+
+  // each item in size map
+  @each $name, $size in $sizes {
+
+    // maps require a second loop
+    @if type-of($size) == "map" {
+
+      // each item in sub map
+      @each $subname, $subsize in $size {
+        // --size-viewport-md
+        #{$size-prefix}#{$name}-#{$subname}: $subsize;
+      }
+
+    // normal sizes
+    } @elseif type-of($size) == "number" {
+
+      // --size-background
+      #{$size-prefix}#{$name}: $size;
+
+    }
+  }
+}
